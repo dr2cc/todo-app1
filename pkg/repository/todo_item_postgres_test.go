@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"testing"
-	"todo-app"
+	"todo-app1"
 
 	"github.com/stretchr/testify/assert"
 	sqlmock "github.com/zhashkevych/go-sqlxmock"
