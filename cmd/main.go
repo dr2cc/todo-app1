@@ -69,6 +69,7 @@ func main() {
 
 	logrus.Print("TodoApp Shutting Down")
 
+	// Используем корневой контекст Background
 	if err := srv.Shutdown(context.Background()); err != nil {
 		logrus.Errorf("error occured on server shutting down: %s", err.Error())
 	}
