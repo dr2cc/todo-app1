@@ -1,15 +1,17 @@
-# Последовательность запуска:
+## Run Project
 
-#   1 Запуск контейнера с db (образ postgres должен уже быть скачан).
-# Со стандартным портом 5432 есть вопросы, меняем его и я (drk) его заменил в config.yml
-docker run --name=todo-db -e POSTGRES_PASSWORD=qwerty -p 5436:5432 -d --rm postgres
+Use ```make run``` to build and run docker containers with application itself and mongodb instance
+
 
 ##  2 Применение схемы миграции (миграции соответствуют системе контроля версий для db)
-cd .\todo-app1\
 migrate -path ./schema -database 'postgres://postgres:qwerty@localhost:5436/postgres?sslmode=disable' up
 
-### 3 Запуск проекта (go run .\cmd\main.go) или скомпилированного файла.
-
+## Если запускаем "вручную": 
+### Запуск контейнера (временного) с db (образ postgres должен уже быть скачан) с внешним портом 5436.
+docker run --name=todo-db -e POSTGRES_PASSWORD=qwerty -p 5436:5432 -d --rm postgres
+### Запуск проекта (в config.yml активировать настройки "Использовать при запуске приложения из cmd")
+	go run .\cmd\main.go
+### Применяем схему миграции из 2.
 
 
 # Настройка Swagger для проекта на Golang

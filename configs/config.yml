@@ -2,7 +2,14 @@ port: "8000"
 
 db:
     username: "postgres"
-    host: "localhost"
-    port: "5436"
+    # Использовать при сборке make run
+    host: "db" 
+    # Как я понимаю, порт меняется т.к. контейнер приложения обращается ко внутреннему порту pg
+    port: "5432"
+    #
+    # # Использовать при запуске приложения из cmd
+    # host: "localhost"
+    # port: "5436"
+    # #
     dbname: "postgres"
     sslmode: "disable"

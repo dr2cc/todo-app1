@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   todo-app:
+    # ... (остальное без изменений)
     build: ./
     command: ./wait-for-postgres.sh db ./todo-app
     ports:
@@ -10,13 +11,20 @@ services:
       - db
     environment:
       - DB_PASSWORD=qwerty
-
+    
   db:
     restart: always
     image: postgres:latest
+    # --- ИЗМЕНИТЕ ЭТУ ЧАСТЬ ---
     volumes:
-    - ./.database/postgres/data:/var/lib/postgresql/data
+    # Замените монтирование локальной папки на именованный том pgdata
+    - pgdata:/var/lib/postgresql/data
+    # -------------------------
     environment:
       - POSTGRES_PASSWORD=qwerty
     ports:
       - 5436:5432
+
+# --- ДОБАВЬТЕ ЭТОТ БЛОК В КОНЕЦ ФАЙЛА ---
+volumes:
+  pgdata:

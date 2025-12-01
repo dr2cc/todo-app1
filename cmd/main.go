@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -49,6 +50,9 @@ func main() {
 	if err != nil {
 		logrus.Fatalf("failed to initialize db: %s", err.Error())
 	}
+
+	fmt.Printf("DB Host: %s, Port: %s, User: %s\n",
+		viper.GetString("db.host"), viper.GetString("db.port"), viper.GetString("db.username"))
 
 	repos := repository.NewRepository(db)
 	services := service.NewService(repos)
