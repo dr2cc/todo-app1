@@ -31,15 +31,15 @@ import (
 func main() {
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 
+	// 1️⃣ Configuration🧹🏦
 	if err := initConfig(); err != nil {
 		logrus.Fatalf("error initializing configs: %s", err.Error())
 	}
-
 	// загружает переменные окружения из файла .env из корня
 	if err := godotenv.Load(); err != nil {
 		logrus.Fatalf("error loading env variables: %s", err.Error())
 	}
-
+	// 2️⃣ Repository🧹🏦
 	db, err := repository.NewPostgresDB(repository.Config{
 		Host:     viper.GetString("db.host"),
 		Port:     viper.GetString("db.port"),
@@ -56,10 +56,18 @@ func main() {
 		viper.GetString("db.host"), viper.GetString("db.port"), viper.GetString("db.username"))
 
 	repos := repository.NewRepository(db)
+
+	// 3️⃣ Use case🧹🏦
 	services := service.NewService(repos)
+
+	// Router
 	handlers := handler.NewHandler(services)
 
+	// 4️⃣ HTTP Server🧹🏦
 	srv := new(todo.Server)
+
+	// Отдельная горутина: сервер запускается в своей собственной горутине.
+	// Это необходимо, так как ListenAndServe() является блокирующим вызовом.
 	go func() {
 		if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
 			logrus.Fatalf("error occured while running http server: %s", err.Error())
@@ -68,17 +76,22 @@ func main() {
 
 	logrus.Print("TodoApp Started")
 
+	// ❗Graceful shutdown
+	// quit: Это наш "стоп-кран".
+	// Это буферизованный канал, который будет ожидать системные сигналы.
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
 	<-quit
 
 	logrus.Print("TodoApp Shutting Down")
 
+	// Корректное завершение (?)
 	// Используем корневой контекст Background
 	if err := srv.Shutdown(context.Background()); err != nil {
 		logrus.Errorf("error occured on server shutting down: %s", err.Error())
 	}
 
+	// Close storage
 	if err := db.Close(); err != nil {
 		logrus.Errorf("error occured on db connection close: %s", err.Error())
 	}
