@@ -1,11 +1,9 @@
-# Проблема с переносом строк в Windows/WSL. Если вы редактировали файл wait-for-postgres.sh в среде Windows, он может использовать окончания строк в стиле Windows (CRLF), которые вызывают проблемы в Linux-контейнерах (которые ожидают LF). Интерпретатор /bin/sh видит символ возврата каретки как часть имени команды, и в результате файл не может быть выполнен.
-- Решение: Преобразовать файл в формат LF.
-- В редакторе, например VS Code, и в правом нижнем углу выбрать формат окончания строк LF.
-Git не сохраняет такое изменение, надо проводить во всех экземплярах (поможет .gitattributes ?)
-
-## Run project
+# Run project
 
 Use ```make run``` to build and run docker containers with application itself and mongodb instance
+
+# Применение схемы миграции (миграции соответствуют системе контроля версий для db)
+migrate -path ./schema -database 'postgres://postgres:qwerty@localhost:5436/postgres?sslmode=disable' up
 
 ## Stop the project and destroy the containers. Также необходимо для очистки кэша docker-compose и сборки проекта с новой сигнатурой
 
@@ -16,9 +14,11 @@ Use ```make run``` to build and run docker containers with application itself an
 `make build`
 `make run`
 
-
-##  2 Применение схемы миграции (миграции соответствуют системе контроля версий для db)
-migrate -path ./schema -database 'postgres://postgres:qwerty@localhost:5436/postgres?sslmode=disable' up
+## (при запуске в Linux) wait-for-postgres.sh должен иметь LF  (Line Feed, перевод строки) последовательность конца строки. 
+Последовательность конца строки в стиле Windows (CRLF- Carriage Return + Line Feed, возврат каретки и перевод строки), вызывает проблемы в Linux-контейнерах (которые ожидают LF). Интерпретатор /bin/sh видит символ возврата каретки как часть имени команды, и в результате файл не может быть выполнен.
+- Решение: Преобразовать файл в формат LF.
+- В редакторе, например VS Code, и в правом нижнем углу выбрать формат окончания строк LF.
+Git не сохраняет такое изменение, надо проводить во всех экземплярах (поможет .gitattributes ?)
 
 ## Если запускаем "вручную": 
 ### Запуск контейнера (временного) с db (образ postgres должен уже быть скачан) с внешним портом 5436.
