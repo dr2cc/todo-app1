@@ -3,9 +3,18 @@
 - В редакторе, например VS Code, и в правом нижнем углу выбрать формат окончания строк LF.
 Git не сохраняет такое изменение, надо проводить во всех экземплярах (поможет .gitattributes ?)
 
-## Run Project
+## Run project
 
 Use ```make run``` to build and run docker containers with application itself and mongodb instance
+
+## Stop the project and destroy the containers. Также необходимо для очистки кэша docker-compose и сборки проекта с новой сигнатурой
+
+`docker-compose down`
+
+## Rebuild the project
+
+`make build`
+`make run`
 
 
 ##  2 Применение схемы миграции (миграции соответствуют системе контроля версий для db)
@@ -50,10 +59,10 @@ import (
 
 
 # 5 
-## Один раз, импорт. Позволяет читать .env
+## Импорт (godotenv). Позволяет читать .env (зачем упомянут здесь, не знаю)
 go get -u github.com/joho/godotenv
 
-## Один раз, создать в корне файл .env с данными:
+## Создать в корне файл .env с данными:
 DB_PASSWORD=qwerty
 
 # 4
@@ -78,6 +87,12 @@ exit
 # =====-*-=======
 ## (скачивание образа postgres в docker)
 docker pull postgres
+
+# About  the migration utilite (https://github.com/golang-migrate/migrate/) on Debian
+wget http://github.com/golang-migrate/migrate/releases/latest/download/migrate.linux-amd64.deb
+sudo dpkg -i migrate.linux-amd64.deb
+rm migrate.linux-amd64.deb
+(последнее- удаление)
 
 # About  the migration utilite on windows.
 
