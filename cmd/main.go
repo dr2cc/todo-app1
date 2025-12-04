@@ -31,7 +31,7 @@ import (
 func main() {
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 
-	// 1️⃣ Configuration🧹🏦
+	// Configuration🧹🏦
 	if err := initConfig(); err != nil {
 		logrus.Fatalf("error initializing configs: %s", err.Error())
 	}
@@ -39,7 +39,7 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		logrus.Fatalf("error loading env variables: %s", err.Error())
 	}
-	// 2️⃣ Repository🧹🏦
+
 	db, err := repository.NewPostgresDB(repository.Config{
 		Host:     viper.GetString("db.host"),
 		Port:     viper.GetString("db.port"),
@@ -55,15 +55,22 @@ func main() {
 	fmt.Printf("DB Host: %s, Port: %s, User: %s\n",
 		viper.GetString("db.host"), viper.GetString("db.port"), viper.GetString("db.username"))
 
-	repos := repository.NewRepository(db)
-
-	// 3️⃣ Use case🧹🏦
-	services := service.NewService(repos)
-
-	// Router
+	// Создаем сущности слоев в обратном порядке:
+	//
+	// 3️⃣ Repository (DAL - Data Access Layer)
+	repository := repository.NewRepository(db)
+	// | внедряем в бизнес-логику
+	// ↓
+	// 2️⃣ Use case (BL - Business Logic Layer, service)
+	services := service.NewService(repository)
+	// |
+	// ↓
+	// 1️⃣ Handler (PL - Presentation Layer, controller)
 	handlers := handler.NewHandler(services)
+	// Работать будет в обратном раправлении!
+	// Ручка -> обращается к службе -> к базе данных.
 
-	// 4️⃣ HTTP Server🧹🏦
+	// HTTP Server🧹🏦
 	srv := new(todo.Server)
 
 	// Отдельная горутина: сервер запускается в своей собственной горутине.
