@@ -17,6 +17,8 @@ const (
 	tokenTTL   = 12 * time.Hour
 )
 
+// tokenClaims — структура утверждений, которая включает стандартные утверждения
+// и одно пользовательское — UserID
 type tokenClaims struct {
 	jwt.StandardClaims
 	UserId int `json:"user_id"`
@@ -40,7 +42,8 @@ func (s *AuthService) GenerateToken(username, password string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
+	// создаём новый токен с алгоритмом подписи HS256
+	// и утверждениями — tokenClaims
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(tokenTTL).Unix(),

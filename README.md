@@ -1,3 +1,118 @@
+## API:
+
+### POST /auth/sign-up
+
+Creates new user 
+
+##### Example Input: 
+```
+{
+    "name":"Const",
+    "username":"drk",
+    "password":"qwerty"
+}
+```
+##### Example Response:
+```
+{
+    "id": 1
+}
+```
+
+### POST /auth/sign-in
+
+Request to get JWT Token based on user credentials
+Запрос на получение токена JWT на основе учетных данных пользователя
+
+##### Example Input: 
+```
+{
+	"username":"drk",
+    "password":"qwerty"
+} 
+```
+
+##### Example Response: 
+```
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjYwMzcwMDEsImlhdCI6MTc2NTk5MzgwMSwidXNlcl9pZCI6MX0.6SU7hcVREFNQABbGGzlp5TLrh3hjaQZnhpCGf4CgbPE"
+} 
+```
+
+### POST /api/lists
+
+Создает новый список, если передается Autorization header.
+Autorization header создается из токена введенного во вкладке Authorization (Type: Bearer Token)
+
+##### Example Input: 
+```
+{
+    "title":"Список деталей"
+}
+```
+
+##### Example Response:
+```
+{
+    "id": 1
+}
+```
+
+### GET /api/lists
+
+Returns all lists
+or
+### GET /api/lists/{number of the list}
+
+Returns list with this number
+
+##### Example Response: 
+```
+{
+    "data": [
+        {
+            "id": 7,
+            "title": "Список деталей",
+            "description": ""
+        },
+        {
+            "id": 8,
+            "title": "Список покупок",
+            "description": "очень важно!"
+        }
+    ]
+}
+```
+or
+```
+{
+    "id": 7,
+    "title": "Список деталей",
+    "description": ""
+}
+```
+
+- Дальше из другого примера. Для образца 
+### DELETE /api/bookmarks
+
+Deletes bookmark by ID:
+
+##### Example Input: 
+```
+{
+	"id": "5da2d8aae9b63715ddfae856"
+} 
+```
+
+
+Комментарий автора:
+- Про первый комментарий не знаю, а make migrate при первом запуске- обязательно!
+# Для запуска приложения:
+make build && make run
+# Если приложение запускается впервые, необходимо применить миграции к базе данных:
+make migrate
+
+
 # Run project
 
 Use ```make run``` to build and run docker containers with application itself and mongodb instance
