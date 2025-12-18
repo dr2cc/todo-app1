@@ -38,6 +38,7 @@ Request to get JWT Token based on user credentials
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjYwMzcwMDEsImlhdCI6MTc2NTk5MzgwMSwidXNlcl9pZCI6MX0.6SU7hcVREFNQABbGGzlp5TLrh3hjaQZnhpCGf4CgbPE"
 } 
 ```
+- CRUD для списков
 
 ### POST /api/lists
 
@@ -92,18 +93,79 @@ or
 }
 ```
 
-- Дальше из другого примера. Для образца 
-### DELETE /api/bookmarks
+### DELETE /api/lists/{number of the list}
+```
+Deletes list with this number
+```
+### PUT /api/lists/{number of the list}
+Обновление данных в списке с данным номером
+##### Example Input: 
+```
+{
+    "title": "Список деталей и расходников",
+    "description": "маленький"
+}
+```
+- CRUD для записей в списках
 
-Deletes bookmark by ID:
+### POST /api/lists/10/items
+
+Создает новую запись, списске с данным номером
 
 ##### Example Input: 
 ```
 {
-	"id": "5da2d8aae9b63715ddfae856"
-} 
+    "title":"Хомут"
+}
 ```
 
+##### Example Response:
+```
+{
+    "id": 1
+}
+```
+
+### GET /api/lists/10/items
+
+Returns all items from list 10
+
+##### Example Response: 
+```
+[
+    {"id":1,"title":"Хомут","description":"","done":false},
+    {"id":2,"title":"Хомут","description":"","done":false},
+    {"id":3,"title":"Гайка","description":"","done":false}
+]
+```
+### GET /api/items/4
+
+Возвращает запись №4 (в проекте записи имеют сквозную нумерацию, независимую от списков)
+
+##### Example Response: 
+```
+{
+    "id": 4,
+    "title": "Reading",
+    "description": "",
+    "done": false
+}
+```
+
+### DELETE /api/items/4
+```
+Delete items with this number
+```
+### PUT /api/items/3
+Обновление данных в записи с данным номером
+##### Example Input: 
+```
+{
+    "title": "Цапа",
+    "description": "ржавая",
+    "done":true
+}
+```
 
 Комментарий автора:
 - Про первый комментарий не знаю, а make migrate при первом запуске- обязательно!
