@@ -12,10 +12,13 @@ import (
 	_ "todo-app1/docs"
 )
 
+// handler имеет в качестве зависимости
+// указатель на структуру сервисов!
 type Handler struct {
 	services *service.Service
 }
 
+// Вызываается из main
 func NewHandler(services *service.Service) *Handler {
 	return &Handler{services: services}
 }
