@@ -7,9 +7,14 @@ import (
 
 //go:generate mockgen -source=service.go -destination=mocks/mock.go
 
+// Сервис аутентификации
 type Authorization interface {
+	// Функцонал:
+	// Регистрация пользователей
 	CreateUser(user todo.User) (int, error)
+	// Генерация jwt токенов
 	GenerateToken(username, password string) (string, error)
+	// Валидация jwt токенов
 	ParseToken(token string) (int, error)
 }
 
@@ -32,11 +37,11 @@ type TodoItem interface {
 // Здесь определены предметные области (доменные зоны).
 // ❗Предметная область это круг задач (сферы реального мира) решаемых приложением.
 type Service struct {
-	// Сервис аутентификации
+	// Сервис аутентификации, со своим функционалом.
 	Authorization
-	// Сервис работы со списками задач
+	// Сервис работы со списками задач, со своим функционалом.
 	TodoList
-	// Сервис работы с задачами
+	// Сервис работы с задачами, со своим функционалом.
 	TodoItem
 }
 
