@@ -5,6 +5,7 @@ import (
 	"todo-app1/pkg/repository"
 )
 
+// "Общение" с репозиторием, сервиса работы со списками задач
 type TodoListService struct {
 	repo repository.TodoList
 }

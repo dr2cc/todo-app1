@@ -24,6 +24,7 @@ type tokenClaims struct {
 	UserId int `json:"user_id"`
 }
 
+// "Общение" с репозиторием, сервиса аутентификации
 type AuthService struct {
 	repo repository.Authorization
 }

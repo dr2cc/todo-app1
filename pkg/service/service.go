@@ -18,7 +18,9 @@ type Authorization interface {
 	ParseToken(token string) (int, error)
 }
 
+// Сервис работы со списками задач
 type TodoList interface {
+	// Функцонал:
 	Create(userId int, list todo.TodoList) (int, error)
 	GetAll(userId int) ([]todo.TodoList, error)
 	GetById(userId, listId int) (todo.TodoList, error)
@@ -26,7 +28,9 @@ type TodoList interface {
 	Update(userId, listId int, input todo.UpdateListInput) error
 }
 
+// Сервис работы с задачами
 type TodoItem interface {
+	// Функцонал:
 	Create(userId, listId int, item todo.TodoItem) (int, error)
 	GetAll(userId, listId int) ([]todo.TodoItem, error)
 	GetById(userId, itemId int) (todo.TodoItem, error)
@@ -36,6 +40,7 @@ type TodoItem interface {
 
 // Здесь определены предметные области (доменные зоны).
 // ❗Предметная область это круг задач (сферы реального мира) решаемых приложением.
+// Получается тут три предметные области: аутентификация, работа со списками, работа с задачами.
 type Service struct {
 	// Сервис аутентификации, со своим функционалом.
 	Authorization
