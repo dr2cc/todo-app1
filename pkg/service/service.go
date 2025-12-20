@@ -29,9 +29,14 @@ type TodoItem interface {
 	Update(userId, itemId int, input todo.UpdateItemInput) error
 }
 
+// Здесь определены предметные области (доменные зоны).
+// ❗Предметная область это круг задач (сферы реального мира) решаемых приложением.
 type Service struct {
+	// Сервис аутентификации
 	Authorization
+	// Сервис работы со списками задач
 	TodoList
+	// Сервис работы с задачами
 	TodoItem
 }
 
