@@ -50,6 +50,7 @@ type Service struct {
 	TodoItem
 }
 
+// Вызываается из main
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),

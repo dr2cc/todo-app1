@@ -27,6 +27,7 @@ func NewHandler(services *service.Service) *Handler {
 	return &Handler{services: services}
 }
 
+// Вызываается из main
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
