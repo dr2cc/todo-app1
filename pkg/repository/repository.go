@@ -33,6 +33,7 @@ type Repository struct {
 	TodoItem
 }
 
+// Called from main
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
