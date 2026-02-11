@@ -1,197 +1,37 @@
-## API:
+# Описание API:
+- [Specification](SPECIFICATION.md)
 
-### POST /auth/sign-up
+**Комманды предсказуемо работают только в Linux.**
 
-Creates new user 
-
-##### Example Input: 
-```
-{
-    "name":"Const",
-    "username":"drk",
-    "password":"qwerty"
-}
-```
-##### Example Response:
-```
-{
-    "id": 1
-}
-```
-
-### POST /auth/sign-in
-
-Request to get JWT Token based on user credentials
-Запрос на получение токена JWT на основе учетных данных пользователя
-
-##### Example Input: 
-```
-{
-	"username":"drk",
-    "password":"qwerty"
-} 
-```
-
-##### Example Response: 
-```
-{
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjYwMzcwMDEsImlhdCI6MTc2NTk5MzgwMSwidXNlcl9pZCI6MX0.6SU7hcVREFNQABbGGzlp5TLrh3hjaQZnhpCGf4CgbPE"
-} 
-```
-- CRUD для списков
-
-### POST /api/lists
-
-Создает новый список, если передается Autorization header.
-Autorization header создается из токена введенного во вкладке Authorization (Type: Bearer Token)
-
-##### Example Input: 
-```
-{
-    "title":"Список деталей"
-}
-```
-
-##### Example Response:
-```
-{
-    "id": 1
-}
-```
-
-### GET /api/lists
-
-Returns all lists
-or
-### GET /api/lists/{number of the list}
-
-Returns list with this number
-
-##### Example Response: 
-```
-{
-    "data": [
-        {
-            "id": 7,
-            "title": "Список деталей",
-            "description": ""
-        },
-        {
-            "id": 8,
-            "title": "Список покупок",
-            "description": "очень важно!"
-        }
-    ]
-}
-```
-or
-```
-{
-    "id": 7,
-    "title": "Список деталей",
-    "description": ""
-}
-```
-
-### DELETE /api/lists/{number of the list}
-```
-Deletes list with this number
-```
-### PUT /api/lists/{number of the list}
-Обновление данных в списке с данным номером
-##### Example Input: 
-```
-{
-    "title": "Список деталей и расходников",
-    "description": "маленький"
-}
-```
-- CRUD для записей в списках
-
-### POST /api/lists/10/items
-
-Создает новую запись, списске с данным номером
-
-##### Example Input: 
-```
-{
-    "title":"Хомут"
-}
-```
-
-##### Example Response:
-```
-{
-    "id": 1
-}
-```
-
-### GET /api/lists/10/items
-
-Returns all items from list 10
-
-##### Example Response: 
-```
-[
-    {"id":1,"title":"Хомут","description":"","done":false},
-    {"id":2,"title":"Хомут","description":"","done":false},
-    {"id":3,"title":"Гайка","description":"","done":false}
-]
-```
-### GET /api/items/4
-
-Возвращает запись №4 (в проекте записи имеют сквозную нумерацию, независимую от списков)
-
-##### Example Response: 
-```
-{
-    "id": 4,
-    "title": "Reading",
-    "description": "",
-    "done": false
-}
-```
-
-### DELETE /api/items/4
-```
-Delete items with this number
-```
-### PUT /api/items/3
-Обновление данных в записи с данным номером
-##### Example Input: 
-```
-{
-    "title": "Цапа",
-    "description": "ржавая",
-    "done":true
-}
-```
-
-Комментарий автора:
-- Про первый комментарий не знаю, а make migrate при первом запуске- обязательно!
-# Для запуска приложения:
+## Для первого запуска приложения:
+```bash
 make build && make run
-# Если приложение запускается впервые, необходимо применить миграции к базе данных:
+```
+## Когда приложение запускается впервые, необходимо применить миграции к базе данных:
+```bash
 make migrate
+```
+**Прочие полезные комманды, не обязательно для этого проекта.**
 
-
-# Run project
-
-Use ```make run``` to build and run docker containers with application itself and mongodb instance
-
-# Применение схемы миграции (миграции соответствуют системе контроля версий для db)
+Run project. To build and run docker containers with application itself and mongodb instance, use: 
+```bash
+make run
+```
+Применение схемы миграции (миграции соответствуют системе контроля версий для db)
+```bash
 migrate -path ./schema -database 'postgres://postgres:qwerty@localhost:5436/postgres?sslmode=disable' up
+```
+Stop the project and destroy the containers. Также необходимо для очистки кэша docker-compose и сборки проекта с новой сигнатурой
+```bash
+docker-compose down
+```
+Rebuild the project
+```bash
+make build
+make run
+```
 
-## Stop the project and destroy the containers. Также необходимо для очистки кэша docker-compose и сборки проекта с новой сигнатурой
-
-`docker-compose down`
-
-## Rebuild the project
-
-`make build`
-`make run`
-
-## (при запуске в Linux) wait-for-postgres.sh должен иметь LF  (Line Feed, перевод строки) последовательность конца строки. 
+**(при запуске в Linux) wait-for-postgres.sh должен иметь LF  (Line Feed, перевод строки) последовательность конца строки.** 
 Последовательность конца строки в стиле Windows (CRLF- Carriage Return + Line Feed, возврат каретки и перевод строки), вызывает проблемы в Linux-контейнерах (которые ожидают LF). Интерпретатор /bin/sh видит символ возврата каретки как часть имени команды, и в результате файл не может быть выполнен.
 - Решение: Преобразовать файл в формат LF.
 - В редакторе, например VS Code, и в правом нижнем углу выбрать формат окончания строк LF.
@@ -199,9 +39,13 @@ Git не сохраняет такое изменение, надо провод
 
 ## Если запускаем "вручную": 
 ### Запуск контейнера (временного) с db (образ postgres должен уже быть скачан) с внешним портом 5436.
+```bash
 docker run --name=todo-db -e POSTGRES_PASSWORD=qwerty -p 5436:5432 -d --rm postgres
+```
 ### Запуск проекта (в config.yml активировать настройки "Использовать при запуске приложения из cmd")
-	go run .\cmd\main.go
+```
+go run .\cmd\main.go
+```
 ### Применяем схему миграции из 2.
 
 
