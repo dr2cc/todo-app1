@@ -45,14 +45,14 @@ Request to get JWT Token based on user credentials
 Создает новый список, если передается Autorization header.
 Autorization header создается из токена введенного во вкладке Authorization (Type: Bearer Token)
 
-##### Example Input: 
+- Example Input: 
 ```
 {
     "title":"Список деталей"
 }
 ```
 
-##### Example Response:
+- Example Response:
 ```
 {
     "id": 1

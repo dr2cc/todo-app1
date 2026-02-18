@@ -23,6 +23,7 @@ import (
 // @Failure default {object} errorResponse
 // @Router /api/lists [post]
 func (h *Handler) createList(c *gin.Context) {
+	// понять middleware
 	userId, err := getUserId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
