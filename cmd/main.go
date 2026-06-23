@@ -66,11 +66,11 @@ func main() {
 	//
 	// 3️⃣ Repository (DAL - Data Access Layer)
 	repository := repository.NewRepository(db)
-	// ↑
+	// ⬇ Сервисам нужно то, что делает репозиторий (CRUD).
 	// 2️⃣ Use case (BL - Business Logic Layer, service)
 	// | Здесь внедряем зависимость с repository
 	services := service.NewService(repository)
-	// ↑
+	// ⬇ Хендлерам нужно то, что делает сервис (обслуживание операций CRUD + GenerateToken, ParseToken)
 	// 1️⃣ Handler (PL - Presentation Layer, controller)
 	// | Здесь внедряем зависимость с services
 	handlers := handler.NewHandler(services)
